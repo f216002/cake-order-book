@@ -6,32 +6,70 @@
 <title>Cake Order Book | केक ऑर्डर बही</title>
 <style>
 :root{
-  --bg:#fff8f0; --card:#ffffff; --ink:#3d2b1f; --mut:#8a6f5c;
-  --brand:#b5651d; --brand-d:#8a4d14; --gold:#e8b64c;
-  --green:#2e7d32; --red:#c62828; --line:#f0e2d0; --amber-bg:#fff7e0;
+  --choc:#4a2c1a; --choc-d:#2e1a0e; --cream:#fff9f3; --card:#ffffff;
+  --ink:#3d2b1f; --mut:#8a6f5c; --caramel:#c97b2d; --berry:#d94f4f;
+  --gold:#d4a24e; --green:#2e7d32; --red:#c62828; --line:#f3e4d3;
+  --amber-bg:#fff7e0;
 }
 html{ -webkit-text-size-adjust:100%; }
-body{ margin:0; font-family:"Segoe UI",system-ui,-apple-system,"Noto Sans",sans-serif; background:var(--bg); color:var(--ink); }
-header{ background:linear-gradient(135deg,#6b4226,#8a5a2b); color:#fff; padding:18px 20px; }
-header h1{ margin:0; font-size:22px; }
-header .hi{ opacity:.85; font-size:14px; margin-top:2px; }
-nav{ display:flex; gap:8px; padding:12px 16px; background:#fff; border-bottom:2px solid var(--line); position:sticky; top:0; z-index:5; flex-wrap:wrap; }
+body{ margin:0; font-family:"Segoe UI",system-ui,-apple-system,"Noto Sans",sans-serif; background:var(--cream); color:var(--ink); }
+h1,h2,.serif{ font-family:Georgia,"Times New Roman",serif; }
+/* ---------- brand header ---------- */
+.brand{ background:linear-gradient(135deg,var(--choc-d),var(--choc) 60%,#6b4226); color:#fff; padding:20px 22px; }
+.brand h1{ margin:0; font-size:26px; letter-spacing:.5px; }
+.brand .hi{ opacity:.85; font-size:14px; margin-top:3px; font-family:"Segoe UI",system-ui,sans-serif; }
+/* ---------- nav ---------- */
+nav{ display:flex; gap:8px; padding:12px 16px; background:#fff; border-bottom:2px solid var(--line); position:sticky; top:0; z-index:5; flex-wrap:wrap; box-shadow:0 2px 8px rgba(74,44,26,.06); }
 nav button{ border:2px solid var(--line); background:#fff; color:var(--ink); border-radius:999px; padding:9px 16px; font-size:15px; cursor:pointer; }
-nav button.active{ background:var(--brand); border-color:var(--brand); color:#fff; font-weight:700; }
+nav button.active{ background:var(--choc); border-color:var(--choc); color:#fff; font-weight:700; }
 nav button .hi{ display:block; font-size:11px; opacity:.75; font-weight:400; }
-main{ max-width:920px; margin:0 auto; padding:16px; }
+main{ max-width:1020px; margin:0 auto; padding:0 16px 16px; }
 section.tabpage{ display:none; } section.tabpage.active{ display:block; }
-.card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+/* ---------- hero ---------- */
+.hero{ margin:16px 0 8px; border-radius:18px; overflow:hidden; position:relative; min-height:340px;
+  background:#3a2412 url("images/hero-bakery.jpg") center/cover no-repeat; display:flex; align-items:flex-end; }
+.hero::after{ content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(30,16,6,.82) 0%, rgba(30,16,6,.25) 55%, rgba(30,16,6,0) 100%); }
+.hero-text{ position:relative; z-index:1; color:#fff; padding:28px; }
+.hero-text h2{ margin:0 0 6px; font-size:34px; }
+.hero-text p{ margin:0 0 16px; font-size:16px; opacity:.92; }
+.cta{ display:inline-block; border:none; border-radius:999px; padding:13px 30px; font-size:17px; font-weight:700; cursor:pointer;
+  background:linear-gradient(135deg,var(--caramel),#e09a3c); color:#fff; box-shadow:0 4px 14px rgba(201,123,45,.45); }
+.cta:hover{ filter:brightness(1.07); }
+/* ---------- menu ---------- */
+.menu-head{ display:flex; align-items:baseline; justify-content:space-between; margin:26px 4px 12px; flex-wrap:wrap; gap:6px; }
+.menu-head h2{ margin:0; font-size:26px; color:var(--choc); }
+.menu-head span{ color:var(--mut); font-size:14px; }
+.menu-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; }
+.product-card{ background:var(--card); border-radius:16px; overflow:hidden; box-shadow:0 3px 12px rgba(74,44,26,.10); border:1px solid var(--line); display:flex; flex-direction:column; transition:transform .15s; }
+.product-card:hover{ transform:translateY(-3px); }
+.product-card img{ width:100%; height:190px; object-fit:cover; display:block; }
+.product-body{ padding:14px 16px 16px; display:flex; flex-direction:column; flex:1; }
+.product-name{ font-family:Georgia,serif; font-size:19px; font-weight:700; color:var(--choc); }
+.product-hi{ font-size:13px; color:var(--mut); }
+.product-desc{ font-size:13.5px; color:var(--mut); margin:8px 0 10px; flex:1; }
+.product-foot{ display:flex; align-items:center; justify-content:space-between; }
+.product-price{ font-size:18px; font-weight:800; color:var(--caramel); }
+.product-price small{ font-size:12px; color:var(--mut); font-weight:400; }
+.order-btn{ border:none; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer; background:var(--berry); color:#fff; }
+.order-btn:hover{ filter:brightness(1.08); }
+/* ---------- info strip ---------- */
+.info-strip{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:26px 0 8px; }
+.info-box{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center; }
+.info-box .em{ font-size:28px; }
+.info-box b{ display:block; margin:6px 0 2px; color:var(--choc); }
+.info-box span{ font-size:13px; color:var(--mut); }
+/* ---------- cards / forms ---------- */
+.card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:12px; box-shadow:0 2px 8px rgba(74,44,26,.06); }
+.card h2{ margin:0 0 4px; color:var(--choc); }
 label{ display:block; font-size:13px; color:var(--mut); margin:12px 0 4px; }
 label .hi{ font-size:12px; }
 input,select,textarea{ width:100%; padding:10px 12px; border:1px solid #d8c9b8; border-radius:8px; font-size:15px; font-family:inherit; background:#fff; }
-input:focus,select:focus,textarea:focus{ outline:2px solid var(--gold); border-color:var(--brand); }
+input:focus,select:focus,textarea:focus{ outline:2px solid var(--gold); border-color:var(--caramel); }
 .row2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-@media (max-width:560px){ .row2{ grid-template-columns:1fr; } }
-.btn{ display:inline-block; border:none; border-radius:10px; padding:12px 22px; font-size:16px; font-weight:700; cursor:pointer; background:var(--brand); color:#fff; margin-top:14px; }
-.btn:hover{ background:var(--brand-d); }
-.btn-green{ background:var(--green); } .btn-green:hover{ background:#1b5e20; }
-.btn-red{ background:#fff; color:var(--red); border:2px solid var(--red); padding:8px 14px; font-size:14px; margin-top:8px; }
+@media (max-width:560px){ .row2{ grid-template-columns:1fr; } .hero-text h2{ font-size:26px; } }
+.btn{ display:inline-block; border:none; border-radius:10px; padding:12px 22px; font-size:16px; font-weight:700; cursor:pointer; background:var(--caramel); color:#fff; margin-top:14px; }
+.btn:hover{ filter:brightness(1.07); }
+.btn-green{ background:var(--green); } .btn-red{ background:#fff; color:var(--red); border:2px solid var(--red); padding:8px 14px; font-size:14px; margin-top:8px; }
 .btn-ghost{ background:#fff; color:var(--ink); border:2px solid var(--line); padding:8px 14px; font-size:14px; margin-top:8px; }
 .btn-sm{ padding:8px 14px; font-size:14px; }
 .balance{ color:var(--red); font-weight:800; }
@@ -42,44 +80,68 @@ input:focus,select:focus,textarea:focus{ outline:2px solid var(--gold); border-c
 .order-head{ font-size:17px; font-weight:700; }
 .order-sub{ color:var(--mut); font-size:14px; margin-top:2px; }
 .order-money{ margin-top:8px; font-size:15px; }
+.order-thumb{ width:52px; height:52px; border-radius:10px; object-fit:cover; float:right; margin-left:10px; border:1px solid var(--line); }
 .banner{ background:var(--amber-bg); border:1px solid var(--gold); border-radius:10px; padding:10px 14px; margin-bottom:12px; font-size:14px; }
 .banner.ok{ background:#e6f4ea; border-color:#81c784; }
 .sumbar{ display:flex; gap:12px; flex-wrap:wrap; }
 .sumbox{ flex:1 1 180px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 16px; }
 .sumbox .n{ font-size:24px; font-weight:800; }
 .sumbox .t{ font-size:13px; color:var(--mut); }
-.slip{ background:#fffdf5; border:2px dashed var(--brand); border-radius:12px; padding:16px; white-space:pre-wrap; font-size:15px; line-height:1.6; }
+.slip{ background:#fffdf5; border:2px dashed var(--caramel); border-radius:12px; padding:16px; white-space:pre-wrap; font-size:15px; line-height:1.6; }
 .toolbar{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
 .toolbar input{ flex:1 1 200px; }
 .chip{ border:2px solid var(--line); background:#fff; border-radius:999px; padding:7px 14px; font-size:14px; cursor:pointer; }
-.chip.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+.chip.active{ background:var(--choc); color:#fff; border-color:var(--choc); }
 .empty{ text-align:center; color:var(--mut); padding:36px 12px; font-size:16px; }
 pre.code{ background:#2b2118; color:#ffe9c4; border-radius:10px; padding:14px; overflow-x:auto; font-size:12.5px; line-height:1.5; max-height:420px; overflow-y:auto; }
 ol.steps li{ margin-bottom:10px; line-height:1.55; }
 code.inline{ background:#f5ead8; padding:2px 6px; border-radius:5px; font-size:13.5px; }
 .err{ color:var(--red); font-size:14px; margin-top:8px; }
 .okmsg{ color:var(--green); font-size:14px; margin-top:8px; }
+.price-hint{ font-size:12px; color:var(--mut); margin-top:4px; }
 footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; }
 </style>
 </head>
 <body>
-<header>
+<header class="brand">
   <h1>🧁 Cake Order Book</h1>
-  <div class="hi">केक ऑर्डर बही — spoken orders become written proof</div>
+  <div class="hi">केक ऑर्डर बही — fresh cakes, baked with love</div>
 </header>
 <nav>
-  <button data-tab="tab-new" class="active">🧾 New Order<span class="hi">नया ऑर्डर</span></button>
+  <button data-tab="tab-home" class="active">🏠 Home<span class="hi">होम</span></button>
+  <button data-tab="tab-new">🧾 Order<span class="hi">ऑर्डर करें</span></button>
   <button data-tab="tab-book">📖 Order Book<span class="hi">ऑर्डर बही</span></button>
   <button data-tab="tab-today">📦 Today's Pickups<span class="hi">आज के ऑर्डर</span></button>
   <button data-tab="tab-settings">🔗 Connect Sheet<span class="hi">शीट जोड़ें</span></button>
 </nav>
 <main>
 
-<!-- ============ NEW ORDER ============ -->
-<section id="tab-new" class="tabpage active">
+<!-- ============ HOME ============ -->
+<section id="tab-home" class="tabpage active">
+  <div class="hero">
+    <div class="hero-text">
+      <h2>Fresh Cakes, Baked with Love</h2>
+      <p>ताज़ा केक, हर ख़ुशी के लिए — order a day ahead, pick up fresh.</p>
+      <button class="cta" id="heroOrder">🧾 Order Now · अभी ऑर्डर करें</button>
+    </div>
+  </div>
+  <div class="menu-head">
+    <h2>Our Cakes · हमारे केक</h2>
+    <span>Tap a cake to start your order ↓</span>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+  <div class="info-strip">
+    <div class="info-box"><div class="em">📅</div><b>Advance booking</b><span>Order a day ahead — we bake fresh for you<br>एक दिन पहले ऑर्डर करें</span></div>
+    <div class="info-box"><div class="em">💬</div><b>WhatsApp confirmation</b><span>Every order becomes a written slip — proof for both sides</span></div>
+    <div class="info-box"><div class="em">💰</div><b>Small advance, no worry</b><span>Pay a little advance, rest on pickup<br>थोड़ा एडवांस, बाकी लेते समय</span></div>
+  </div>
+</section>
+
+<!-- ============ ORDER ============ -->
+<section id="tab-new" class="tabpage">
   <div id="demoBanner" class="banner" style="display:none"></div>
   <div class="card">
-    <h2 style="margin:0 0 4px">New order <span class="hi" style="font-size:13px;color:var(--mut)">नया ऑर्डर</span></h2>
+    <h2>Place your order <span class="hi" style="font-size:13px;color:var(--mut);font-family:'Segoe UI',sans-serif">ऑर्डर करें</span></h2>
     <form id="orderForm" autocomplete="off">
       <div class="row2">
         <div>
@@ -93,22 +155,17 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
       </div>
       <div class="row2">
         <div>
-          <label>Cake type <span class="hi">केक का प्रकार</span></label>
-          <select id="f_cake">
-            <option>Birthday / जन्मदिन</option>
-            <option>Anniversary / सालगिरह</option>
-            <option>Wedding / शादी</option>
-            <option>Other / अन्य</option>
-          </select>
+          <label>Choose your cake <span class="hi">केक चुनें</span></label>
+          <select id="f_cake"></select>
         </div>
         <div>
           <label>Size <span class="hi">वज़न</span></label>
           <select id="f_size">
-            <option>0.5 kg</option>
-            <option selected>1 kg</option>
-            <option>1.5 kg</option>
-            <option>2 kg</option>
-            <option>3 kg+</option>
+            <option value="0.5">0.5 kg</option>
+            <option value="1" selected>1 kg</option>
+            <option value="1.5">1.5 kg</option>
+            <option value="2">2 kg</option>
+            <option value="3">3 kg</option>
           </select>
         </div>
       </div>
@@ -125,6 +182,7 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
         <div>
           <label>Total price (₹) <span class="hi">कुल कीमत</span> *</label>
           <input id="f_total" type="number" min="1" step="1" required placeholder="500">
+          <div class="price-hint" id="priceHint"></div>
         </div>
         <div>
           <label>Advance paid (₹) <span class="hi">एडवांस</span></label>
@@ -132,13 +190,13 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
         </div>
       </div>
       <label>Notes <span class="hi">नोट्स</span></label>
-      <textarea id="f_notes" rows="2" maxlength="200" placeholder="Chocolate flavour, eggless..."></textarea>
+      <textarea id="f_notes" rows="2" maxlength="200" placeholder="Eggless, less sweet..."></textarea>
       <div id="formErr" class="err"></div>
-      <button type="submit" class="btn">💾 Save order <span style="font-weight:400;font-size:14px">ऑर्डर सेव करें</span></button>
+      <button type="submit" class="btn">💾 Confirm order <span style="font-weight:400;font-size:14px">ऑर्डर पक्का करें</span></button>
     </form>
   </div>
   <div class="card" id="slipCard" style="display:none">
-    <h2 style="margin:0 0 8px">Order slip <span class="hi" style="font-size:13px;color:var(--mut)">पर्ची — send this on WhatsApp as proof</span></h2>
+    <h2>Order slip <span class="hi" style="font-size:13px;color:var(--mut);font-family:'Segoe UI',sans-serif">पर्ची — send this on WhatsApp as proof</span></h2>
     <div class="slip" id="slipText"></div>
     <div id="slipSync" style="font-size:13px;color:var(--mut);margin-top:8px"></div>
     <button class="btn btn-sm" id="btnCopy">📋 Copy slip</button>
@@ -166,7 +224,7 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
 <!-- ============ TODAY'S PICKUPS ============ -->
 <section id="tab-today" class="tabpage">
   <div class="card">
-    <h2 style="margin:0">📦 Pickups today — <span id="todayDate"></span></h2>
+    <h2>📦 Pickups today — <span id="todayDate"></span></h2>
     <div class="order-sub">आज लेने आने वाले ऑर्डर · <span id="todayCount"></span></div>
   </div>
   <div id="todayList"></div>
@@ -175,7 +233,7 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
 <!-- ============ CONNECT SHEET ============ -->
 <section id="tab-settings" class="tabpage">
   <div class="card">
-    <h2 style="margin:0 0 4px">🔗 Connect your Google Sheet <span class="hi" style="font-size:13px;color:var(--mut)">गूगल शीट जोड़ें</span></h2>
+    <h2>🔗 Connect your Google Sheet <span class="hi" style="font-size:13px;color:var(--mut);font-family:'Segoe UI',sans-serif">गूगल शीट जोड़ें</span></h2>
     <p style="color:var(--mut);font-size:14px">Without a connection, orders stay safely on <b>this computer only</b> (demo mode). Connect your sheet once, and every order also lands in your Google Sheet — readable from anywhere.</p>
     <label>Web app URL <span class="hi">वेब ऐप का लिंक</span></label>
     <input id="bkUrl" placeholder="https://script.google.com/macros/s/.../exec">
@@ -187,9 +245,9 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
     <div class="order-sub" id="lastSync" style="margin-top:4px"></div>
   </div>
   <div class="card">
-    <h2 style="margin:0 0 8px">How to connect — 5 minutes <span class="hi" style="font-size:13px;color:var(--mut)">कैसे जोड़ें</span></h2>
+    <h2>How to connect — 5 minutes <span class="hi" style="font-size:13px;color:var(--mut);font-family:'Segoe UI',sans-serif">कैसे जोड़ें</span></h2>
     <ol class="steps">
-      <li>Open your Google Sheet (the one you shared), then click <b>Extensions → Apps Script</b>.</li>
+      <li>Open your Google Sheet, then click <b>Extensions → Apps Script</b>.</li>
       <li>Delete whatever is in the editor, paste the <b>entire code below</b>, then press <b>Ctrl+S</b> to save.</li>
       <li>Click <b>Deploy → New deployment</b>. Next to "Select type", choose <b>Web app</b>.</li>
       <li>Set <b>"Execute as"</b> to <b>Me</b>, and <b>"Who has access"</b> to <b>Anyone</b>. Click <b>Deploy</b>, allow access when asked.</li>
@@ -204,17 +262,27 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
 </section>
 
 </main>
-<footer>Cake Order Book v2 · made for the classroom · data belongs to the shop</footer>
+<footer>Cake Order Book · made fresh daily 🧁 · data belongs to the shop</footer>
 
 <script>
 "use strict";
+/* ================= product menu ================= */
+const PRODUCTS = [
+  {id:"choc",   name:"Chocolate Truffle",    hi:"चॉकलेट ट्रफल",   desc:"Rich dark chocolate ganache with chocolate shavings.",        price:550, img:"images/chocolate-truffle.jpg"},
+  {id:"bf",     name:"Black Forest",         hi:"ब्लैक फ़ॉरेस्ट",  desc:"Chocolate sponge, juicy cherries & fresh cream.",             price:500, img:"images/black-forest.jpg"},
+  {id:"pine",   name:"Pineapple Delight",    hi:"पाइनएप्पल",       desc:"Light vanilla sponge with pineapple & soft cream.",           price:450, img:"images/pineapple.jpg"},
+  {id:"butter", name:"Butterscotch Crunch",  hi:"बटरस्कॉच",        desc:"Golden caramel, crunchy praline, butterscotch drizzle.",      price:550, img:"images/butterscotch.jpg"},
+  {id:"rv",     name:"Red Velvet",           hi:"रेड वेलवेट",      desc:"Deep red crumb with silky cream-cheese frosting.",            price:650, img:"images/red-velvet.jpg"},
+  {id:"bday",   name:"Birthday Celebration", hi:"जन्मदिन स्पेशल",  desc:"Festive candles, sprinkles & frosting swirls.",               price:600, img:"images/birthday-candles.jpg"}
+];
+const productById = id => PRODUCTS.find(p=>p.id===id);
+const productByName = n => PRODUCTS.find(p=>p.name===n);
+
 /* ================= helpers ================= */
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const todayLocal = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
 const fmtDate = iso => { if(!iso) return ""; const p=iso.split("-"); return p.length===3 ? p[2]+"/"+p[1]+"/"+p[0] : iso; };
-/* Google Sheets returns dates as long strings ("Mon Oct 05 2026 ...");
-   normalize everything to YYYY-MM-DD so pickup-date filtering always works. */
 const normDate = s => {
   s = String(s||"").trim();
   const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
@@ -273,12 +341,66 @@ const Backend = {
 };
 function setLastSync(s){ if(s) localStorage.setItem(SYNC_KEY, s); }
 function getLastSync(){ return localStorage.getItem(SYNC_KEY) || ""; }
+function friendlyErr(ex){
+  const m = String((ex && ex.message) || ex || "");
+  if(m==="not-connected") return "No URL saved yet — paste the Web app URL above and press Save first.";
+  if(m==="timeout") return "The sheet took too long to answer (over 20 seconds). The first run after deploying is slow — press Test again.";
+  if(m==="network-error") return "The request was blocked or the address is wrong. Turn off any ad-blocker for this page, then re-copy the Web app URL from Deploy → Manage deployments and Save it again.";
+  return m;
+}
+
+/* ================= menu + order-this ================= */
+function renderMenu(){
+  $("menuGrid").innerHTML = PRODUCTS.map(p=>
+    '<div class="product-card">' +
+      '<img src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy">' +
+      '<div class="product-body">' +
+        '<div class="product-name">'+esc(p.name)+'</div>' +
+        '<div class="product-hi">'+esc(p.hi)+'</div>' +
+        '<div class="product-desc">'+esc(p.desc)+'</div>' +
+        '<div class="product-foot">' +
+          '<div class="product-price">₹'+p.price+'<small>/kg</small></div>' +
+          '<button class="order-btn" data-order="'+p.id+'">Order this 🧾</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>').join("");
+}
+function fillCakeSelect(){
+  $("f_cake").innerHTML = PRODUCTS.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' — ₹'+p.price+'/kg</option>').join("") +
+    '<option value="other">Other / अन्य</option>';
+}
+function autoPrice(){
+  const p = productById($("f_cake").value);
+  const kg = parseFloat($("f_size").value)||1;
+  if(p){
+    const total = Math.round(p.price*kg);
+    $("f_total").value = total;
+    $("priceHint").textContent = p.name+" ₹"+p.price+"/kg × "+kg+" kg — you can adjust the price below.";
+  } else {
+    $("priceHint").textContent = "";
+  }
+}
+function orderThis(id){
+  fillCakeSelectIfEmpty();
+  $("f_cake").value = id;
+  autoPrice();
+  switchTab("tab-new");
+  window.scrollTo({top:0, behavior:"smooth"});
+  setTimeout(()=>$("f_name").focus(), 350);
+}
+function fillCakeSelectIfEmpty(){ if(!$("f_cake").options.length) fillCakeSelect(); }
+function switchTab(id){
+  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active", x.getAttribute("data-tab")===id));
+  document.querySelectorAll("section.tabpage").forEach(x=>x.classList.toggle("active", x.id===id));
+}
 
 /* ================= rendering ================= */
 let bookFilter = "all", bookQuery = "";
 
-function orderCard(o, bigActions){
+function orderCard(o){
   const bal = Number(o.balance||0);
+  const prod = productByName(o.cakeType);
+  const thumb = prod ? '<img class="order-thumb" src="'+prod.img+'" alt="">' : '';
   const balHtml = bal>0 && o.status==="pending"
     ? '<div class="order-money">Total ₹'+esc(o.totalPrice)+' · Advance ₹'+esc(o.advancePaid)+' · <span class="balance">Balance ₹'+bal+'</span></div>'
     : '<div class="order-money">Total ₹'+esc(o.totalPrice)+' · Advance ₹'+esc(o.advancePaid)+'</div>';
@@ -289,12 +411,12 @@ function orderCard(o, bigActions){
   } else {
     actions = '<div class="order-sub">Updated: '+esc(fmtDT(o.updatedAt||o.timestamp))+(o.synced===false?' · <span class="balance">not synced yet</span>':'')+'</div>';
   }
-  return '<div class="card" data-card="'+esc(o.orderId)+'">' +
+  return '<div class="card">' + thumb +
     '<div class="order-head">'+esc(o.customerName)+' <span class="order-sub">'+esc(o.phone)+'</span>'+(STATUS_LABEL[o.status]||"")+'</div>' +
     '<div class="order-sub">🎂 '+esc(o.cakeType)+' · '+esc(o.size)+' · Pickup <b>'+esc(fmtDate(o.pickupDate))+'</b> · <span class="order-sub">'+esc(o.orderId)+'</span></div>' +
     (o.messageOnCake ? '<div class="order-sub">✍️ “'+esc(o.messageOnCake)+'”</div>' : '') +
     (o.notes ? '<div class="order-sub">📝 '+esc(o.notes)+'</div>' : '') +
-    balHtml + actions + '</div>';
+    balHtml + actions + '<div style="clear:both"></div></div>';
 }
 
 function renderSummary(){
@@ -310,7 +432,7 @@ function renderBook(){
   const q = bookQuery.trim().toLowerCase();
   let list = DB.orders.slice();
   if(bookFilter!=="all") list = list.filter(o=>o.status===bookFilter);
-  if(q) list = list.filter(o=>(o.customerName+" "+o.phone+" "+o.orderId).toLowerCase().indexOf(q)>=0);
+  if(q) list = list.filter(o=>(o.customerName+" "+o.phone+" "+o.orderId+" "+o.cakeType).toLowerCase().indexOf(q)>=0);
   list.sort((a,b)=> (a.pickupDate<b.pickupDate?-1:a.pickupDate>b.pickupDate?1: (a.timestamp<b.timestamp?1:-1)) );
   $("bookList").innerHTML = list.length ? list.map(o=>orderCard(o)).join("")
     : '<div class="empty">No orders here yet.<br>नया ऑर्डर ऊपर वाले टैब से जोड़ें।</div>';
@@ -326,62 +448,50 @@ function renderToday(){
     : '<div class="empty">🎉 No pickups today.<br>आज कोई ऑर्डर लेने नहीं आना है।</div>';
 }
 
-function friendlyErr(ex){
-  const m = String((ex && ex.message) || ex || "");
-  if(m==="not-connected") return "No URL saved yet — paste the Web app URL above and press Save first.";
-  if(m==="timeout") return "The sheet took too long to answer (over 20 seconds). The first run after deploying is slow — press Test again.";
-  if(m==="network-error") return "The request was blocked or the address is wrong. Turn off any ad-blocker for this page, then re-copy the Web app URL from Deploy → Manage deployments and Save it again.";
-  return m;
-}
-
 function renderBackend(){
-  const has = !!Backend.url();
+  const custom = (localStorage.getItem(BK_KEY)||"").trim();
   const banner = $("demoBanner");
-  if(!has){
-    banner.style.display = "";
-    banner.className = "banner";
-    banner.innerHTML = "💻 <b>Demo mode</b> — orders are saved on <b>this computer only</b>. To also save them in your Google Sheet, open the <b>🔗 Connect Sheet</b> tab.";
-  } else {
-    banner.style.display = "";
+  banner.style.display = "";
+  if(custom){
     banner.className = "banner ok";
-    banner.innerHTML = "✅ <b>Sheet connected</b> — new orders also go to your Google Sheet." + (getLastSync() ? " Last sync: "+esc(getLastSync()) : "");
+    banner.innerHTML = "✅ <b>Sheet connected</b> (your saved address) — new orders also go to your Google Sheet." + (getLastSync() ? " Last sync: "+esc(getLastSync()) : "");
+  } else {
+    banner.className = "banner ok";
+    banner.innerHTML = "✅ <b>Sheet connected</b> (built-in address) — new orders also go to your Google Sheet." + (getLastSync() ? " Last sync: "+esc(getLastSync()) : "");
   }
   const ls = getLastSync();
   $("lastSync").textContent = ls ? "Last sync: "+ls : "";
   const su = $("savedUrl");
-  const custom = (localStorage.getItem(BK_KEY)||"").trim();
   if(su) su.innerHTML = 'Using: <code class="inline">'+esc(Backend.url().slice(0,72))+(Backend.url().length>72?"…":"")+'</code>' +
     (custom ? ' <span class="order-sub">(your saved address)</span>' : ' <span class="order-sub">(built-in — no setup needed)</span>');
 }
 
 function renderAll(){ renderSummary(); renderBook(); renderToday(); renderBackend(); }
 
-/* status changes (event delegation) */
+/* ================= events ================= */
 document.addEventListener("click", async e=>{
   const b = e.target.closest("[data-act]");
-  if(!b) return;
-  const id = b.getAttribute("data-id"), st = b.getAttribute("data-act");
-  if(st==="cancelled" && !confirm("Cancel this order?")) return;
-  const o = DB.update(id, {status:st, updatedAt:new Date().toISOString(), synced:false});
-  renderAll();
-  if(Backend.url() && o){
-    try{ await Backend.pushStatus(o); DB.update(id,{synced:true}); setLastSync(new Date().toLocaleString("en-IN")); }
-    catch(err){ /* stays unsynced, will retry on Sync now */ }
+  if(b){
+    const id = b.getAttribute("data-id"), st = b.getAttribute("data-act");
+    if(st==="cancelled" && !confirm("Cancel this order?")) return;
+    const o = DB.update(id, {status:st, updatedAt:new Date().toISOString(), synced:false});
     renderAll();
+    if(Backend.url() && o){
+      try{ await Backend.pushStatus(o); DB.update(id,{synced:true}); setLastSync(new Date().toLocaleString("en-IN")); }
+      catch(err){}
+      renderAll();
+    }
+    return;
   }
+  const ob = e.target.closest("[data-order]");
+  if(ob){ orderThis(ob.getAttribute("data-order")); return; }
 });
 
-/* tabs */
 document.querySelectorAll("nav button").forEach(b=>{
-  b.addEventListener("click", ()=>{
-    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
-    document.querySelectorAll("section.tabpage").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    $(b.getAttribute("data-tab")).classList.add("active");
-  });
+  b.addEventListener("click", ()=>switchTab(b.getAttribute("data-tab")));
 });
+$("heroOrder").addEventListener("click", ()=>switchTab("tab-new"));
 
-/* search + filters */
 $("q").addEventListener("input", e=>{ bookQuery = e.target.value; renderBook(); });
 document.querySelectorAll(".chip").forEach(c=>{
   c.addEventListener("click", ()=>{
@@ -389,10 +499,17 @@ document.querySelectorAll(".chip").forEach(c=>{
     c.classList.add("active"); bookFilter = c.getAttribute("data-f"); renderBook();
   });
 });
+$("f_cake").addEventListener("change", autoPrice);
+$("f_size").addEventListener("change", autoPrice);
 
 /* ================= new order + slip ================= */
+function cakeDisplayName(){
+  const p = productById($("f_cake").value);
+  return p ? p.name : "Other";
+}
 function slipText(o){
-  return "🧁 CAKE ORDER SLIP\n" +
+  const prod = productByName(o.cakeType);
+  return "🧁 CAKE ORDER SLIP — " + o.cakeType + "\n" +
     "Order "+o.orderId+" · "+fmtDT(o.timestamp)+"\n" +
     "--------------------------------\n" +
     "Customer: "+o.customerName+" ("+o.phone+")\n" +
@@ -419,16 +536,17 @@ $("orderForm").addEventListener("submit", async e=>{
   if(!pickup){ err.textContent = "Please choose the pickup date."; return; }
   if(!(total>0)){ err.textContent = "Total price must be more than 0."; return; }
   if(adv<0 || adv>total){ err.textContent = "Advance must be between 0 and the total price."; return; }
+  const cakeName = cakeDisplayName();
+  const sizeLabel = $("f_size").options[$("f_size").selectedIndex].text;
   const o = {
     orderId: uid(), timestamp: new Date().toISOString(), updatedAt: new Date().toISOString(),
     customerName: name, phone: phone,
-    cakeType: $("f_cake").value, size: $("f_size").value,
+    cakeType: cakeName, size: sizeLabel,
     messageOnCake: $("f_msg").value.trim(), pickupDate: pickup,
     totalPrice: total, advancePaid: adv, balance: total-adv,
     status: "pending", notes: $("f_notes").value.trim(), synced: false
   };
   DB.add(o);
-  // push to sheet in background if connected
   let syncMsg = "💻 Saved on this computer.";
   if(Backend.url()){
     syncMsg = "⏳ Saving to Google Sheet…";
@@ -445,6 +563,7 @@ $("orderForm").addEventListener("submit", async e=>{
   $("slipCard").style.display = "";
   $("slipCard").scrollIntoView({behavior:"smooth"});
   e.target.reset(); $("f_adv").value = "0"; $("f_pickup").value = todayLocal();
+  fillCakeSelect(); autoPrice();
 });
 
 $("btnCopy").addEventListener("click", async ()=>{
@@ -461,12 +580,13 @@ $("btnDl").addEventListener("click", ()=>{
 /* ================= backend settings ================= */
 $("btnSaveUrl").addEventListener("click", ()=>{
   Backend.set($("bkUrl").value);
-  $("bkMsg").innerHTML = Backend.url() ? '<span class="okmsg">✅ Saved. Now press “Test connection”.</span>' : '<span class="err">Cleared — back to demo mode.</span>';
+  $("bkMsg").innerHTML = (localStorage.getItem(BK_KEY)||"").trim()
+    ? '<span class="okmsg">✅ Saved. Now press “Test connection”.</span>'
+    : '<span class="okmsg">✅ Cleared — using the built-in address.</span>';
   renderAll();
 });
 $("btnTest").addEventListener("click", async ()=>{
   const m = $("bkMsg");
-  if(!Backend.url()){ m.innerHTML = '<span class="err">Paste the Web app URL first (it ends with /exec).</span>'; return; }
   m.textContent = "Testing…";
   try{
     const j = await Backend.list();
@@ -477,7 +597,6 @@ $("btnTest").addEventListener("click", async ()=>{
 });
 $("btnSync").addEventListener("click", async ()=>{
   const m = $("bkMsg");
-  if(!Backend.url()){ m.innerHTML = '<span class="err">Connect the sheet first.</span>'; return; }
   m.textContent = "Syncing…";
   try{
     let pushed = 0; const failed = [];
@@ -604,8 +723,11 @@ $("btnCopyCode").addEventListener("click", async ()=>{
 
 /* ================= init ================= */
 DB.load();
+renderMenu();
+fillCakeSelect();
+autoPrice();
 $("f_pickup").value = todayLocal();
-$("bkUrl").value = Backend.url();
+$("bkUrl").value = (localStorage.getItem(BK_KEY)||"").trim();
 renderAll();
 </script>
 </body>
