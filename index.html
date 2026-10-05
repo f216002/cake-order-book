@@ -100,6 +100,22 @@ code.inline{ background:#f5ead8; padding:2px 6px; border-radius:5px; font-size:1
 .okmsg{ color:var(--green); font-size:14px; margin-top:8px; }
 .price-hint{ font-size:12px; color:var(--mut); margin-top:4px; }
 footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; }
+/* ---------- owner / admin ---------- */
+.pinrow{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+.pinrow input{ max-width:200px; }
+.admin-item{ display:flex; gap:12px; align-items:center; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; }
+.admin-item img{ width:64px; height:64px; border-radius:10px; object-fit:cover; flex:none; border:1px solid var(--line); background:#f7f0e6; }
+.admin-item .grow{ flex:1; min-width:0; }
+.switch{ position:relative; width:48px; height:27px; flex:none; }
+.switch input{ opacity:0; width:0; height:0; }
+.sl{ position:absolute; inset:0; background:#cfc0ae; border-radius:999px; cursor:pointer; transition:.2s; }
+.sl:before{ content:""; position:absolute; width:21px; height:21px; border-radius:50%; background:#fff; top:3px; left:3px; transition:.2s; box-shadow:0 1px 3px rgba(0,0,0,.25); }
+.switch input:checked + .sl{ background:var(--green); }
+.switch input:checked + .sl:before{ transform:translateX(21px); }
+.iconbtn{ border:2px solid var(--line); background:#fff; border-radius:8px; padding:7px 10px; font-size:14px; cursor:pointer; flex:none; }
+.iconbtn:hover{ border-color:var(--caramel); }
+.ppreview{ width:100%; max-height:230px; object-fit:cover; border-radius:10px; border:1px solid var(--line); margin-top:8px; display:none; background:#f7f0e6; }
+.helper{ font-size:13px; color:var(--mut); background:#fdf6ea; border:1px dashed var(--gold); border-radius:8px; padding:8px 10px; margin-top:8px; line-height:1.55; }
 </style>
 </head>
 <body>
@@ -113,6 +129,7 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
   <button data-tab="tab-book">📖 Order Book<span class="hi">ऑर्डर बही</span></button>
   <button data-tab="tab-today">📦 Today's Pickups<span class="hi">आज के ऑर्डर</span></button>
   <button data-tab="tab-settings">🔗 Connect Sheet<span class="hi">शीट जोड़ें</span></button>
+  <button data-tab="tab-owner">👑 Owner<span class="hi">मालिक</span></button>
 </nav>
 <main>
 
@@ -261,6 +278,53 @@ footer{ text-align:center; color:var(--mut); font-size:12px; padding:24px 12px; 
   </div>
 </section>
 
+<!-- ============ OWNER ============ -->
+<section id="tab-owner" class="tabpage">
+  <div class="card" id="pinCard">
+    <h2>👑 Owner area <span class="hi" style="font-size:13px;color:var(--mut);font-family:'Segoe UI',sans-serif">मालिक क्षेत्र</span></h2>
+    <p class="order-sub">Manage your cakes: add, edit, delete, change prices &amp; photos. Enter your 4-digit PIN.</p>
+    <div class="pinrow">
+      <input id="pinInput" inputmode="numeric" maxlength="20" placeholder="PIN" autocomplete="off">
+      <button class="btn btn-sm" id="btnUnlock" style="margin-top:0">🔓 Unlock</button>
+    </div>
+    <div id="pinErr" class="err"></div>
+    <p class="order-sub" style="margin-top:10px">Default PIN is <b>1234</b> — change it in your Google Sheet's <b>Settings</b> tab. The lock resets when the browser closes.</p>
+  </div>
+  <div id="adminPanel" style="display:none">
+    <div class="card">
+      <h2>Products <span class="hi" style="font-size:13px;color:var(--mut);font-family:'Segoe UI',sans-serif">उत्पाद प्रबंधन</span>
+        <button class="btn btn-sm btn-ghost" id="btnLock" style="float:right;margin-top:0">🔒 Lock</button>
+      </h2>
+      <div class="order-sub">Changes appear on the menu immediately.</div>
+      <div style="clear:both"></div>
+      <button class="btn btn-sm" id="btnAddProduct">➕ Add product · नया केक जोड़ें</button>
+    </div>
+    <div class="card" id="adminForm" style="display:none">
+      <h2 id="pfTitle">Add product</h2>
+      <input type="hidden" id="pf_id">
+      <label>Photo link <span class="hi">फोटो का लिंक</span> *</label>
+      <input id="pf_img" placeholder="https://drive.google.com/file/d/.../view">
+      <img id="pfPreview" class="ppreview" alt="">
+      <div class="helper">📱 <b>Phone:</b> take a photo → Google Drive app → upload → ⋮ → Manage access → <b>Anyone with the link</b> → Copy link → paste here.<br>💻 <b>Computer:</b> drag the photo into drive.google.com → right-click → Share → Anyone with the link → Copy link.<br>✅ If the preview shows above, the link is correct!</div>
+      <div class="row2">
+        <div><label>Name * <span class="hi">नाम</span></label><input id="pf_name" maxlength="40" placeholder="Mango Cake"></div>
+        <div><label>Hindi name <span class="hi">हिंदी नाम</span></label><input id="pf_hindi" maxlength="40" placeholder="मैंगो केक"></div>
+      </div>
+      <label>Description <span class="hi">विवरण</span></label>
+      <input id="pf_desc" maxlength="120" placeholder="Fresh mango, soft cream...">
+      <div class="row2">
+        <div><label>Price ₹/kg * <span class="hi">कीमत</span></label><input id="pf_price" type="number" min="1" step="1" placeholder="500"></div>
+        <div><label>Sort order <span class="hi">क्रम</span></label><input id="pf_sort" type="number" min="0" step="1" value="99"></div>
+      </div>
+      <label><input type="checkbox" id="pf_active" checked style="width:auto;display:inline-block"> Show on menu <span class="hi">मेनू में दिखाएँ</span></label>
+      <div id="pfErr" class="err"></div>
+      <button class="btn btn-sm" id="btnSaveProduct">💾 Save product</button>
+      <button class="btn btn-sm btn-ghost" id="btnCancelProduct">Cancel</button>
+    </div>
+    <div id="adminList"></div>
+  </div>
+</section>
+
 </main>
 <footer>Cake Order Book · made fresh daily 🧁 · data belongs to the shop</footer>
 
@@ -275,8 +339,40 @@ const PRODUCTS = [
   {id:"rv",     name:"Red Velvet",           hi:"रेड वेलवेट",      desc:"Deep red crumb with silky cream-cheese frosting.",            price:650, img:"images/red-velvet.jpg"},
   {id:"bday",   name:"Birthday Celebration", hi:"जन्मदिन स्पेशल",  desc:"Festive candles, sprinkles & frosting swirls.",               price:600, img:"images/birthday-candles.jpg"}
 ];
-const productById = id => PRODUCTS.find(p=>p.id===id);
-const productByName = n => PRODUCTS.find(p=>p.name===n);
+const productById = id => MENU.find(p=>p.id===id);
+const productByName = n => MENU.find(p=>p.name===n) || ALL_PRODUCTS.find(p=>p.name===n);
+/* MENU = what customers see (active products). Loaded from the sheet when
+   possible, with localStorage cache, falling back to the built-in list. */
+let MENU = PRODUCTS.slice();
+let ALL_PRODUCTS = [];
+function driveImg(url){
+  url = String(url||"").trim();
+  if(/drive\.google\.com/.test(url)){
+    const m = url.match(/[-\w]{25,}/);
+    if(m) return "https://drive.google.com/thumbnail?id="+m[0]+"&sz=w800";
+  }
+  return url;
+}
+async function loadProducts(){
+  try{
+    const cached = JSON.parse(localStorage.getItem("cakeMenuCache")||"[]");
+    if(cached.length){ MENU = cached; }
+  }catch(e){}
+  renderMenu(); fillCakeSelect();
+  try{
+    const j = await Backend.call({action:"products"});
+    const rows = j.products||[];
+    if(rows.length){
+      ALL_PRODUCTS = rows;
+      MENU = rows
+        .filter(p=>String(p.active).toLowerCase()==="true")
+        .sort((a,b)=>Number(a.sort||99)-Number(b.sort||99))
+        .map(p=>({id:p.id, name:p.name, hi:p.hindi, desc:p.desc, price:Number(p.price), img:driveImg(p.img)}));
+      try{ localStorage.setItem("cakeMenuCache", JSON.stringify(MENU)); }catch(e){}
+      renderMenu(); fillCakeSelect(); renderAdminList();
+    }
+  }catch(e){ /* offline or not deployed yet: keep cache / built-in */ }
+}
 
 /* ================= helpers ================= */
 const $ = id => document.getElementById(id);
@@ -346,12 +442,13 @@ function friendlyErr(ex){
   if(m==="not-connected") return "No URL saved yet — paste the Web app URL above and press Save first.";
   if(m==="timeout") return "The sheet took too long to answer (over 20 seconds). The first run after deploying is slow — press Test again.";
   if(m==="network-error") return "The request was blocked or the address is wrong. Turn off any ad-blocker for this page, then re-copy the Web app URL from Deploy → Manage deployments and Save it again.";
+  if(m==="wrong-pin") return "Wrong PIN.";
   return m;
 }
 
 /* ================= menu + order-this ================= */
 function renderMenu(){
-  $("menuGrid").innerHTML = PRODUCTS.map(p=>
+  $("menuGrid").innerHTML = MENU.map(p=>
     '<div class="product-card">' +
       '<img src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy">' +
       '<div class="product-body">' +
@@ -366,7 +463,7 @@ function renderMenu(){
     '</div>').join("");
 }
 function fillCakeSelect(){
-  $("f_cake").innerHTML = PRODUCTS.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' — ₹'+p.price+'/kg</option>').join("") +
+  $("f_cake").innerHTML = MENU.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' — ₹'+p.price+'/kg</option>').join("") +
     '<option value="other">Other / अन्य</option>';
 }
 function autoPrice(){
@@ -406,8 +503,10 @@ function orderCard(o){
     : '<div class="order-money">Total ₹'+esc(o.totalPrice)+' · Advance ₹'+esc(o.advancePaid)+'</div>';
   let actions = "";
   if(o.status==="pending"){
-    actions = '<div><button class="btn btn-sm btn-green" data-act="picked_up" data-id="'+esc(o.orderId)+'">✅ Picked up <span style="font-weight:400">ले गए</span></button> ' +
-              '<button class="btn-red" data-act="cancelled" data-id="'+esc(o.orderId)+'">✖ Cancel</button></div>';
+    actions = isOwner()
+      ? '<div><button class="btn btn-sm btn-green" data-act="picked_up" data-id="'+esc(o.orderId)+'">✅ Picked up <span style="font-weight:400">ले गए</span></button> ' +
+        '<button class="btn-red" data-act="cancelled" data-id="'+esc(o.orderId)+'">✖ Cancel</button></div>'
+      : '<div class="order-sub">⏳ Waiting for pickup · लेने का इंतज़ार है</div>';
   } else {
     actions = '<div class="order-sub">Updated: '+esc(fmtDT(o.updatedAt||o.timestamp))+(o.synced===false?' · <span class="balance">not synced yet</span>':'')+'</div>';
   }
@@ -625,22 +724,31 @@ $("btnSync").addEventListener("click", async ()=>{
 
 /* ================= Apps Script code (shown in guide) ================= */
 const GAS_CODE = [
-"// ===== Cake Order Book backend v2 — paste into Extensions > Apps Script =====",
+"// ===== Cake Order Book backend v3 — paste into Extensions > Apps Script =====",
 "// Deploy: New deployment > Web app > Execute as: Me > Who has access: Anyone",
 "// Supports both plain JSON and JSONP (callback=...) so the site works everywhere.",
+"// v3 adds: Products catalog + PIN-protected owner actions.",
 "",
-"var SHEET_NAME = 'Orders';",
+"var SHEET_ORDERS = 'Orders';",
+"var SHEET_PRODUCTS = 'Products';",
+"var SHEET_SETTINGS = 'Settings';",
 "var HEADERS = ['Timestamp','OrderID','CustomerName','Phone','CakeType','Size',",
 "  'MessageOnCake','PickupDate','TotalPrice','AdvancePaid','Balance','Status','Notes'];",
+"var P_HEADERS = ['ID','Name','HindiName','Description','PricePerKg','ImageURL','Active','SortOrder'];",
+"var IMG_BASE = 'https://f216002.github.io/cake-order-book/images/';",
 "",
 "function doGet(e) {",
 "  var p = (e && e.parameter) || {};",
 "  var action = String(p.action || '').toLowerCase();",
 "  var cb = String(p.callback || '');",
 "  try {",
-"    if (action === 'list')     return out({ok:true, orders:listOrders()}, cb);",
-"    if (action === 'add')      return out({ok:true, order:addOrder(p)}, cb);",
-"    if (action === 'setstatus')return out({ok:true, order:setStatus(p)}, cb);",
+"    if (action === 'list')        return out({ok:true, orders:listOrders()}, cb);",
+"    if (action === 'add')         return out({ok:true, order:addOrder(p)}, cb);",
+"    if (action === 'setstatus')   return out({ok:true, order:setStatus(p)}, cb);",
+"    if (action === 'products')    return out({ok:true, products:listProducts()}, cb);",
+"    if (action === 'checkpin')    return out({ok: String(p.pin||'')===getPin()}, cb);",
+"    if (action === 'productsave'){ needPin(p); return out({ok:true, product:productSave(p)}, cb); }",
+"    if (action === 'productdelete'){ needPin(p); return out({ok:true, result:productDelete(p)}, cb); }",
 "    return out({ok:false, error:'Unknown action: ' + action}, cb);",
 "  } catch (err) {",
 "    return out({ok:false, error:String(err)}, cb);",
@@ -657,14 +765,35 @@ const GAS_CODE = [
 "    .setMimeType(ContentService.MimeType.JSON);",
 "}",
 "",
-"function sheet() {",
+"/* ---------------- PIN ---------------- */",
+"function getPin(){",
 "  var ss = SpreadsheetApp.getActiveSpreadsheet();",
-"  var sh = ss.getSheetByName(SHEET_NAME);",
-"  if (!sh) { sh = ss.insertSheet(SHEET_NAME); }",
+"  var sh = ss.getSheetByName(SHEET_SETTINGS);",
+"  if(!sh){",
+"    sh = ss.insertSheet(SHEET_SETTINGS);",
+"    sh.appendRow(['Key','Value']);",
+"    sh.appendRow(['PIN','1234']);",
+"    return '1234';",
+"  }",
+"  var vals = sh.getDataRange().getValues();",
+"  for(var i=0;i<vals.length;i++){",
+"    if(String(vals[i][0]).trim()==='PIN') return String(vals[i][1]).trim();",
+"  }",
+"  sh.appendRow(['PIN','1234']);",
+"  return '1234';",
+"}",
+"function needPin(p){",
+"  if(String(p.pin||'')!==getPin()) throw new Error('wrong-pin');",
+"}",
+"",
+"/* ---------------- Orders ---------------- */",
+"function ordersSheet() {",
+"  var ss = SpreadsheetApp.getActiveSpreadsheet();",
+"  var sh = ss.getSheetByName(SHEET_ORDERS);",
+"  if (!sh) { sh = ss.insertSheet(SHEET_ORDERS); }",
 "  if (sh.getLastRow() === 0) { sh.appendRow(HEADERS); }",
 "  return sh;",
 "}",
-"",
 "function rowToOrder(r) {",
 "  return {",
 "    timestamp:    r[0] instanceof Date ? r[0].toISOString() : String(r[0]||''),",
@@ -683,17 +812,15 @@ const GAS_CODE = [
 "    synced:       true",
 "  };",
 "}",
-"",
 "function listOrders() {",
-"  var sh = sheet(), last = sh.getLastRow();",
+"  var sh = ordersSheet(), last = sh.getLastRow();",
 "  if (last < 2) return [];",
 "  return sh.getRange(2,1,last-1,HEADERS.length).getValues()",
 "    .filter(function(r){ return String(r[1]).trim() !== ''; })",
 "    .map(rowToOrder);",
 "}",
-"",
 "function addOrder(p) {",
-"  var sh = sheet();",
+"  var sh = ordersSheet();",
 "  var total = Number(p.totalPrice||0), adv = Number(p.advancePaid||0);",
 "  var row = [new Date(), p.orderId||'', p.customerName||'', p.phone||'',",
 "    p.cakeType||'', p.size||'', p.messageOnCake||'', p.pickupDate||'',",
@@ -701,9 +828,8 @@ const GAS_CODE = [
 "  sh.appendRow(row);",
 "  return rowToOrder(row);",
 "}",
-"",
 "function setStatus(p) {",
-"  var sh = sheet(), last = sh.getLastRow();",
+"  var sh = ordersSheet(), last = sh.getLastRow();",
 "  if (last < 2) throw new Error('No orders yet');",
 "  var ids = sh.getRange(2,2,last-1,1).getValues().map(function(r){ return String(r[0]); });",
 "  var i = ids.indexOf(String(p.orderId||''));",
@@ -712,6 +838,65 @@ const GAS_CODE = [
 "  if (['pending','picked_up','cancelled'].indexOf(st) < 0) throw new Error('Bad status');",
 "  sh.getRange(i+2, 12).setValue(st);",
 "  return rowToOrder(sh.getRange(i+2,1,1,HEADERS.length).getValues()[0]);",
+"}",
+"",
+"/* ---------------- Products catalog ---------------- */",
+"function productsSheet(){",
+"  var ss = SpreadsheetApp.getActiveSpreadsheet();",
+"  var sh = ss.getSheetByName(SHEET_PRODUCTS);",
+"  if(!sh){",
+"    sh = ss.insertSheet(SHEET_PRODUCTS);",
+"    sh.appendRow(P_HEADERS);",
+"    var seed = [",
+"      ['PCHOC',  'Chocolate Truffle',    'चॉकलेट ट्रफल',  'Rich dark chocolate ganache with chocolate shavings.', 550, IMG_BASE+'chocolate-truffle.jpg', 'TRUE', 1],",
+"      ['PBF',    'Black Forest',         'ब्लैक फ़ॉरेस्ट', 'Chocolate sponge, juicy cherries & fresh cream.',       500, IMG_BASE+'black-forest.jpg',      'TRUE', 2],",
+"      ['PPINE',  'Pineapple Delight',    'पाइनएप्पल',      'Light vanilla sponge with pineapple & soft cream.',    450, IMG_BASE+'pineapple.jpg',         'TRUE', 3],",
+"      ['PBUT',   'Butterscotch Crunch',  'बटरस्कॉच',       'Golden caramel, crunchy praline, butterscotch drizzle.',550, IMG_BASE+'butterscotch.jpg',     'TRUE', 4],",
+"      ['PRV',    'Red Velvet',           'रेड वेलवेट',     'Deep red crumb with silky cream-cheese frosting.',     650, IMG_BASE+'red-velvet.jpg',        'TRUE', 5],",
+"      ['PBDAY',  'Birthday Celebration', 'जन्मदिन स्पेशल', 'Festive candles, sprinkles & frosting swirls.',        600, IMG_BASE+'birthday-candles.jpg',  'TRUE', 6]",
+"    ];",
+"    seed.forEach(function(r){ sh.appendRow(r); });",
+"  }",
+"  return sh;",
+"}",
+"function rowToProduct(r){",
+"  return { id:String(r[0]||''), name:String(r[1]||''), hindi:String(r[2]||''),",
+"    desc:String(r[3]||''), price:Number(r[4]||0), img:String(r[5]||''),",
+"    active:String(r[6]||'TRUE'), sort:Number(r[7]||0) };",
+"}",
+"function listProducts(){",
+"  var sh = productsSheet(), last = sh.getLastRow();",
+"  if(last<2) return [];",
+"  return sh.getRange(2,1,last-1,P_HEADERS.length).getValues()",
+"    .filter(function(r){ return String(r[0]).trim()!==''; })",
+"    .map(rowToProduct);",
+"}",
+"function productSave(p){",
+"  var sh = productsSheet(), last = sh.getLastRow();",
+"  var id = String(p.id||'').trim();",
+"  var row = [id, p.name||'', p.hindi||'', p.desc||'', Number(p.price||0),",
+"    p.img||'', String(p.active||'TRUE'), Number(p.sort||0)];",
+"  if(!id){",
+"    id = 'P'+Date.now().toString(36).toUpperCase();",
+"    row[0] = id;",
+"    sh.appendRow(row);",
+"  } else {",
+"    var ids = last<2 ? [] : sh.getRange(2,1,last-1,1).getValues().map(function(r){ return String(r[0]); });",
+"    var i = ids.indexOf(id);",
+"    if(i<0) sh.appendRow(row);",
+"    else sh.getRange(i+2,1,1,P_HEADERS.length).setValues([row]);",
+"  }",
+"  return rowToProduct(row);",
+"}",
+"function productDelete(p){",
+"  var sh = productsSheet(), last = sh.getLastRow();",
+"  var id = String(p.id||'').trim();",
+"  if(last>=2){",
+"    var ids = sh.getRange(2,1,last-1,1).getValues().map(function(r){ return String(r[0]); });",
+"    var i = ids.indexOf(id);",
+"    if(i>=0) sh.deleteRow(i+2);",
+"  }",
+"  return {id:id, deleted:true};",
 "}"
 ].join("\n");
 $("gasCode").textContent = GAS_CODE;
@@ -721,14 +906,128 @@ $("btnCopyCode").addEventListener("click", async ()=>{
   setTimeout(()=>{ $("btnCopyCode").textContent = "📋 Copy the full code"; }, 2500);
 });
 
+/* ================= owner (single auth gate: swap PIN for Google later here) ================= */
+function isOwner(){ return sessionStorage.getItem("cakeOwner")==="1"; }
+function ownerPin(){ return sessionStorage.getItem("cakePin")||""; }
+async function unlockOwner(){
+  const pin = $("pinInput").value.trim();
+  $("pinErr").textContent = "";
+  if(!pin){ $("pinErr").textContent = "Enter the PIN."; return; }
+  try{
+    const j = await Backend.call({action:"checkpin", pin:pin});
+    if(j.ok){
+      sessionStorage.setItem("cakeOwner","1");
+      sessionStorage.setItem("cakePin",pin);
+      $("pinInput").value = "";
+      renderOwner(); renderAll();
+    } else $("pinErr").textContent = "❌ Wrong PIN.";
+  }catch(ex){ $("pinErr").textContent = "❌ "+friendlyErr(ex); }
+}
+function lockOwner(){
+  sessionStorage.removeItem("cakeOwner");
+  sessionStorage.removeItem("cakePin");
+  renderOwner(); renderAll();
+}
+function renderOwner(){
+  const on = isOwner();
+  $("pinCard").style.display = on ? "none" : "";
+  $("adminPanel").style.display = on ? "" : "none";
+  if(on) renderAdminList();
+}
+function renderAdminList(){
+  const box = $("adminList");
+  const rows = ALL_PRODUCTS.slice().sort((a,b)=>Number(a.sort||99)-Number(b.sort||99));
+  box.innerHTML = rows.length ? rows.map(p=>
+    '<div class="admin-item">'+
+    '<img src="'+esc(driveImg(p.img))+'" onerror="this.style.display=\'none\'" alt="">'+
+    '<div class="grow"><b>'+esc(p.name)+'</b><div class="order-sub">'+esc(p.hindi||"")+' · ₹'+esc(p.price)+'/kg'+(String(p.active).toLowerCase()==="true"?"":" · ⏸ hidden")+'</div></div>'+
+    '<label class="switch" title="Show / hide"><input type="checkbox" data-toggle="'+esc(p.id)+'"'+(String(p.active).toLowerCase()==="true"?" checked":"")+'><span class="sl"></span></label>'+
+    '<button class="iconbtn" data-pedit="'+esc(p.id)+'" title="Edit">✏️</button>'+
+    '<button class="iconbtn" data-pdel="'+esc(p.id)+'" title="Delete">🗑️</button>'+
+    "</div>").join("")
+    : '<div class="empty">No products yet — add your first cake! 🎂</div>';
+}
+function previewPhoto(){
+  const v = driveImg($("pf_img").value);
+  const img = $("pfPreview");
+  if(v){ img.src = v; img.style.display = ""; img.onerror = ()=>{ img.style.display="none"; }; }
+  else img.style.display = "none";
+}
+function openProductForm(p){
+  $("adminForm").style.display = "";
+  $("pfTitle").textContent = p ? "Edit product" : "Add product";
+  $("pf_id").value = p ? p.id : "";
+  $("pf_name").value = p ? p.name : "";
+  $("pf_hindi").value = p ? (p.hindi||"") : "";
+  $("pf_desc").value = p ? (p.desc||"") : "";
+  $("pf_price").value = p ? p.price : "";
+  $("pf_img").value = p ? (p.img||"") : "";
+  $("pf_sort").value = p ? (p.sort||99) : 99;
+  $("pf_active").checked = p ? String(p.active).toLowerCase()==="true" : true;
+  $("pfErr").textContent = "";
+  previewPhoto();
+  $("adminForm").scrollIntoView({behavior:"smooth", block:"start"});
+}
+async function saveProduct(){
+  const err = $("pfErr"); err.textContent = "";
+  const name = $("pf_name").value.trim();
+  const price = Math.round(Number($("pf_price").value)||0);
+  const img = $("pf_img").value.trim();
+  if(!name){ err.textContent = "Enter the cake name."; return; }
+  if(!(price>0)){ err.textContent = "Enter a valid price."; return; }
+  if(!img){ err.textContent = "Add a photo link."; return; }
+  try{
+    await Backend.call({action:"productsave", pin:ownerPin(), id:$("pf_id").value.trim(),
+      name:name, hindi:$("pf_hindi").value.trim(), desc:$("pf_desc").value.trim(),
+      price:price, img:img, active:$("pf_active").checked?"TRUE":"FALSE",
+      sort:Math.round(Number($("pf_sort").value)||99)});
+    $("adminForm").style.display = "none";
+    await loadProducts();
+  }catch(ex){ err.textContent = "❌ "+friendlyErr(ex); }
+}
+async function deleteProduct(id){
+  const p = ALL_PRODUCTS.find(x=>x.id===id);
+  if(!confirm("Delete “"+(p?p.name:id)+"” permanently?")) return;
+  try{
+    await Backend.call({action:"productdelete", pin:ownerPin(), id:id});
+    await loadProducts();
+  }catch(ex){ alert("❌ "+friendlyErr(ex)); }
+}
+
 /* ================= init ================= */
 DB.load();
-renderMenu();
-fillCakeSelect();
+renderOwner();
+loadProducts();
 autoPrice();
 $("f_pickup").value = todayLocal();
 $("bkUrl").value = (localStorage.getItem(BK_KEY)||"").trim();
 renderAll();
+/* owner wiring */
+$("btnUnlock").addEventListener("click", unlockOwner);
+$("btnLock").addEventListener("click", lockOwner);
+$("btnAddProduct").addEventListener("click", ()=>openProductForm(null));
+$("btnSaveProduct").addEventListener("click", saveProduct);
+$("btnCancelProduct").addEventListener("click", ()=>{ $("adminForm").style.display="none"; });
+$("pinInput").addEventListener("keydown", e=>{ if(e.key==="Enter") unlockOwner(); });
+$("pf_img").addEventListener("input", previewPhoto);
+document.addEventListener("click", e=>{
+  const pe = e.target.closest("[data-pedit]");
+  if(pe){ openProductForm(ALL_PRODUCTS.find(x=>x.id===pe.getAttribute("data-pedit"))||null); return; }
+  const pd = e.target.closest("[data-pdel]");
+  if(pd){ deleteProduct(pd.getAttribute("data-pdel")); return; }
+});
+document.addEventListener("change", async e=>{
+  const t = e.target.closest("[data-toggle]");
+  if(!t) return;
+  const p = ALL_PRODUCTS.find(x=>x.id===t.getAttribute("data-toggle"));
+  if(!p) return;
+  try{
+    await Backend.call({action:"productsave", pin:ownerPin(), id:p.id, name:p.name,
+      hindi:p.hindi||"", desc:p.desc||"", price:p.price, img:p.img||"",
+      active:t.checked?"TRUE":"FALSE", sort:p.sort||99});
+    await loadProducts();
+  }catch(ex){ alert("❌ "+friendlyErr(ex)); t.checked = !t.checked; }
+});
 </script>
 </body>
 </html>
